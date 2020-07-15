@@ -73,13 +73,14 @@ public class VillaServiceImpl implements VillaService {
             throw new NotFoundExceptions("There is no villa with id - "+id);
     }
 
-    public void save(VillaDto villaDto){
+    public Villa save(VillaDto villaDto){
         if(villaDto != null){
             Villa villa = VillaMapper.INSTANCE.dtoToVilla(villaDto);
             villaRepository.save(villa);
         } else{
             throw new InputNotValid("can't add a null villa ");
         }
+        return  VillaMapper.INSTANCE.dtoToVilla(villaDto);
     }
 
     public void update(int id, VillaDto villaDto){
@@ -96,4 +97,6 @@ public class VillaServiceImpl implements VillaService {
         }
 
     }
+
+
 }

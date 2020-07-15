@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Log
+//@Log
 @RestController
 @RequiredArgsConstructor
 public class VillaController {
@@ -35,9 +35,11 @@ public class VillaController {
     }
 
     @PostMapping("/api/v1/villa/add")
-    public void save(@RequestBody VillaDto villaDto){
-        log.info("user entered the saveVilla");
-        villaService.save(villaDto);
+    public Villa save(@RequestBody VillaDto villaDto){
+       System.out.println("user entered the saveVilla" + villaDto);
+        Villa villa =  villaService.save(villaDto);
+        System.out.println("user entered the saveVilla" + villa);
+        return villa;
     }
 
     @PutMapping("/api/v1/villa/update/{id}")

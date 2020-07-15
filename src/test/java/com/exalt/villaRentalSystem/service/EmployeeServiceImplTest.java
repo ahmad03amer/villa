@@ -1,7 +1,11 @@
 
 package com.exalt.villaRentalSystem.service;
 import com.exalt.villaRentalSystem.model.Employee;
+import com.exalt.villaRentalSystem.model.Villa;
 import com.exalt.villaRentalSystem.repository.EmployeeRepository;
+import javassist.NotFoundException;
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,5 +55,54 @@ class EmployeeServiceImplTest {
     @Test
     public void countEmployeeTest(){
         System.out.println("Total Records -----> "+employeeRepository.count());
+    }
+
+    @BeforeEach
+    public void createEmployee(){
+        Employee employee = new Employee();
+        employee.setId(1);
+        employee.setIdNumber("554645665");
+        employee.setEmail("rami@gmail.com");
+        employee.setFullName("rami rami");
+        employee.setRole("employee");
+        employee.setPassword("@356444");
+        employee.setDOB("1992-05-12");
+        employee.setHours(13);
+        employee.setSalary(3250);
+        employee.setGender("male");
+        employee.setPhoneNumber("+9705336952");
+        employee.setAddress("Ramallah");
+
+        employeeRepository.save(employee);
+    }
+
+    @Test
+    public void findAllEmployeesTest(){
+        List<Employee> employees = employeeRepository.findAll();
+        Assert.assertNotNull(employees);
+    }
+
+    @Test
+    public void findByIdTest() throws NotFoundException {
+        Employee employee =  employeeRepository.findById(1).get();
+        Assert.assertTrue("employee does not exist",employee != null);
+        if(employee != null){
+            assertAll("employee",
+                    () -> assertEquals("employee",employee.getRole()),
+                    () -> assertEquals(1,employee.getId()),
+                    () -> assertEquals("Ramallah",employee.getAddress()),
+                    () -> assertEquals("1992-05-12",employee.getDOB()),
+                    () -> assertEquals(3250,employee.getSalary()),
+                    () -> assertEquals(13,employee.getHours()),
+                    () -> assertEquals("rami rami",employee.getFullName()),
+                    () -> assertEquals("male",employee.getGender()),
+                    () -> assertEquals("rami@gmail.com",employee.getEmail()),
+                    () -> assertEquals("554645665",employee.getIdNumber()),
+                    () -> assertEquals("@356444",employee.getPassword()),
+                    () -> assertEquals("+9705336952",employee.getPhoneNumber())
+            );
+        }else {
+            throw new NotFoundException("The villa with id=2 does not exist");
+        }
     }
 }

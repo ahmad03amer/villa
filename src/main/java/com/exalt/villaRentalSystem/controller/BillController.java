@@ -1,6 +1,7 @@
 package com.exalt.villaRentalSystem.controller;
 
 import com.exalt.villaRentalSystem.dto.BillDto;
+import com.exalt.villaRentalSystem.dto.CustomerDto;
 import com.exalt.villaRentalSystem.model.Bill;
 import com.exalt.villaRentalSystem.projection.BillProjection;
 import com.exalt.villaRentalSystem.service.BillService;
@@ -30,6 +31,12 @@ public class BillController {
         return bills;
     }
 
+    @GetMapping("/api/v1/bill/{id}")
+    public BillDto findById(@PathVariable int id){
+        log.info("user entered the /bills/id to search a customer");
+        BillDto bill = billService.findById(id);
+        return bill;
+    }
     @GetMapping("/api/v1/bills/projectedBills")
     public List<BillProjection> findAllProjectedBy(){
         log.info("User  entered /bills/projectedBills to projectedBils ");

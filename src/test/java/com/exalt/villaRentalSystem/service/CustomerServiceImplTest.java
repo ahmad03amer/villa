@@ -1,7 +1,14 @@
 package com.exalt.villaRentalSystem.service;
 
+import com.exalt.villaRentalSystem.errorAPI.NotFoundExceptions;
 import com.exalt.villaRentalSystem.model.Customer;
+import com.exalt.villaRentalSystem.model.Villa;
 import com.exalt.villaRentalSystem.repository.CustomerRepository;
+import com.exalt.villaRentalSystem.repository.VillaRepository;
+import javassist.NotFoundException;
+import lombok.extern.java.Log;
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,12 +21,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@Log
 @SpringBootTest
 class CustomerServiceImplTest {
 
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private VillaRepository villaRepository;
 
     @Test
     public void updateTest(){
@@ -81,4 +90,94 @@ class CustomerServiceImplTest {
         assertEquals("yara",cus.getFullName(),"failed to add the object");
     }
 
+    @BeforeEach
+    public void createCustomer(){
+        Customer customer = new Customer();
+        customer.setId(1);
+        customer.setIdNumber("3669665");
+        customer.setEmail("raed@gmail.com");
+        customer.setFullName("raed");
+        customer.setRole("customer");
+        customer.setPassword("@366952");
+        customer.setDOB("1978-05-12");
+        customer.setGender("male");
+        customer.setPhoneNumber("+9705366695");
+        customer.setAddress("nablus");
+
+        customerRepository.save(customer);
+        createVilla(customer);
+    }
+
+    public void createVilla(Customer c){
+        Villa villa = new Villa();
+        villa.setId(2);
+        villa.setName("yafa");
+        villa.setAddress("jerusalem");
+        villa.setCost(3200);
+        villa.setStatus(true);
+        villa.setDescription("Nice");
+        villa.setCustomer(c);
+        villaRepository.save(villa);
+    }
+
+    @Test
+    public void findAllCustomersTest(){
+        List<Customer> customers = customerRepository.findAll();
+        Assert.assertNotNull(customers);
+        customers.forEach(customer -> System.out.println(customer.getFullName()));
+    }
+
+    @Test
+    public void findByIdTest() throws NotFoundException {
+        Customer customer =  customerRepository.findById(1).get();
+        Assert.assertTrue("employee does not exist",customer != null);
+        if(customer != null){
+            assertAll("employee",
+                    () -> assertEquals("customer",customer.getRole()),
+                    () -> assertEquals(1,customer.getId()),
+                    () -> assertEquals("nablus",customer.getAddress()),
+                    () -> assertEquals("1978-05-12",customer.getDOB()),
+                    () -> assertEquals("raed",customer.getFullName()),
+                    () -> assertEquals("male",customer.getGender()),
+                    () -> assertEquals("raed@gmail.com",customer.getEmail()),
+                    () -> assertEquals("3669665",customer.getIdNumber()),
+                    () -> assertEquals("@366952",customer.getPassword()),
+                    () -> assertEquals("+9705366695",customer.getPhoneNumber())
+            );
+        }else {
+            throw new NotFoundException("The villa with id=2 does not exist");
+        }
+    }
+
+    @Test
+    public void addVillasToAcustomerTest(){
+        Customer customer = customerRepository.findById(1).orElse(null);
+        if(customer == null)
+            throw new NotFoundExceptions("There is no customer with id -1 ");
+        Villa villa =villaRepository.findById(2).orElse(null);
+          if(villa == null)
+              throw new NotFoundExceptions("There is no villa with id -2 ");
+        villa.setCustomer(customer);
+        villaRepository.save(villa);
+        System.out.println(customer.getId());
+        Assert.assertEquals(1,villa.getCustomer().getId());
+    }
+
+    @Test
+    public void getCustomerVillas(){
+        Customer customer = customerRepository.findById(1).orElse(null);
+        if(customer == null)
+            throw new NotFoundExceptions("There is no customer with id -1 ");
+        List<Villa> villas = customer.getVillas();
+        if(villas == null)
+            throw new NotFoundExceptions("the customer does not have any villas");
+        customer.getVillas().forEach(villa -> System.out.println("Villa name ---->"+villa.getName()));
+    }
+
+    @Test
+    public void displayVillaDetails(){
+        Villa villa =villaRepository.findById(2).orElse(null);
+        if(villa == null)
+            throw new NotFoundExceptions("There is no villa with id -2 ");
+    }
 }

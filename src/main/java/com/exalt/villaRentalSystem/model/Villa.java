@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
-@Entity
+@Entity(name = "users")
 @Getter
 @Setter
 @AllArgsConstructor(staticName = "of")

@@ -4,9 +4,11 @@ import com.exalt.villaRentalSystem.converter.BillConverter;
 import com.exalt.villaRentalSystem.dto.BillDto;
 import com.exalt.villaRentalSystem.dto.CustomerDto;
 import com.exalt.villaRentalSystem.dto.Mapper.BillMapper;
+import com.exalt.villaRentalSystem.dto.Mapper.CustomerMapper;
 import com.exalt.villaRentalSystem.errorAPI.InputNotValid;
 import com.exalt.villaRentalSystem.errorAPI.NotFoundExceptions;
 import com.exalt.villaRentalSystem.model.Bill;
+import com.exalt.villaRentalSystem.model.Customer;
 import com.exalt.villaRentalSystem.projection.BillProjection;
 import com.exalt.villaRentalSystem.repository.BillRepository;
 import com.exalt.villaRentalSystem.service.BillService;
@@ -27,7 +29,6 @@ public class BillServiceImpl implements BillService {
     @Autowired
     BillConverter billConverter;
 
-
     public List<BillProjection> findAllProjectedBy(){
         return billRepository.findAllProjectedBy();
     }
@@ -43,6 +44,16 @@ public class BillServiceImpl implements BillService {
         return billConverter.entityToDto(bills);
     }
 
+    public BillDto findById(int id){
+        if (id < 0)
+            throw new InputNotValid("UnValid input id , it must be positive integer");
+        Bill bill =billRepository.findById(id).orElse(null);
+
+        if(bill != null)
+            return BillMapper.INSTANCE.billToDto(bill);
+        else
+            throw new NotFoundExceptions("There is no bill with id - "+id);
+    }
 
     public void delete(int id) {
         if (id < 0)

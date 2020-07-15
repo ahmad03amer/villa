@@ -18,4 +18,5 @@ public interface BillService {
 
       Page<Bill> loadBillsPaging(int page, int size);
 
+    BillDto findById(int id);
 }

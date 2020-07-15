@@ -27,5 +27,5 @@ public interface VillaService {
     void update(int id, VillaDto villaDto);
 
 
-    void save(VillaDto villaDto);
+    Villa save(VillaDto villaDto);
 }
