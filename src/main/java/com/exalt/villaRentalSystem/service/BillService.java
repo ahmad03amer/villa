@@ -12,7 +12,7 @@ public interface BillService {
 
       void delete(int id);
 
-      BillDto save(BillDto billDto);
+      BillDto add(BillDto billDto);
 
       List<BillProjection> findAllProjectedBy();
 

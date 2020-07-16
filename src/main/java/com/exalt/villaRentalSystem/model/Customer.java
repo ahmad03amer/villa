@@ -1,5 +1,6 @@
 package com.exalt.villaRentalSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,17 +9,21 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="customers")
+@JsonIgnoreProperties(value= {"bills"})
+
 public class Customer extends Person {
     @NotBlank(message = "Please Enter the Role")
     private String role;
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Villa> villas = new ArrayList();
 

@@ -1,6 +1,5 @@
 package com.exalt.villaRentalSystem.service.impl;
 
-import com.exalt.villaRentalSystem.converter.DepartmentConverter;
 import com.exalt.villaRentalSystem.dto.DepartmentDto;
 import com.exalt.villaRentalSystem.dto.EmployeeDto;
 import com.exalt.villaRentalSystem.dto.Mapper.DepartmentMapper;
@@ -15,7 +14,6 @@ import com.exalt.villaRentalSystem.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service

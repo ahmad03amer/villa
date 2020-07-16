@@ -16,7 +16,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -110,7 +113,7 @@ class CustomerServiceImplTest {
 
     public void createVilla(Customer c){
         Villa villa = new Villa();
-        villa.setId(2);
+        villa.setId(1);
         villa.setName("yafa");
         villa.setAddress("jerusalem");
         villa.setCost(3200);
@@ -179,5 +182,70 @@ class CustomerServiceImplTest {
         Villa villa =villaRepository.findById(2).orElse(null);
         if(villa == null)
             throw new NotFoundExceptions("There is no villa with id -2 ");
+    }
+
+    @Test
+    public void addCustomerTest(){
+        String addCustomerUrl = "http://localhost:8084/api/v1/customer/";
+        RestTemplate restTemplate = new RestTemplate();
+
+        Customer customer = customerRepository.findById(1).orElse(null);
+        if(customer == null){
+            throw new NotFoundExceptions("The customer does not exist");
+        }
+        HttpEntity<Customer> request = new HttpEntity<>(customer);
+        ResponseEntity<Customer> result = restTemplate.postForEntity(addCustomerUrl, request, Customer.class);
+        assertAll("customer",
+                () -> assertEquals("customer",customer.getRole()),
+                () -> assertEquals(1,customer.getId()),
+                () -> assertEquals("nablus",customer.getAddress()),
+                () -> assertEquals("1978-05-12",customer.getDOB()),
+                () -> assertEquals("raed",customer.getFullName()),
+                () -> assertEquals("male",customer.getGender()),
+                () -> assertEquals("raed@gmail.com",customer.getEmail()),
+                () -> assertEquals("3669665",customer.getIdNumber()),
+                () -> assertEquals("@366952",customer.getPassword()),
+                () -> assertEquals("+9705366695",customer.getPhoneNumber())
+        );
+        Assert.assertEquals("200 OK",result.getStatusCode().toString());
+    }
+
+
+    @Test
+    public void getCustomersTest(){
+        String getCustomersUrl = "http://localhost:8084/api/v1/customers";
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Customer[]> response = restTemplate.getForEntity(getCustomersUrl, Customer[].class);
+        Customer[] customers = response.getBody();
+        if(customers == null)
+            throw new NotFoundExceptions("There is no customers in the database!");
+        assertNotNull(customers);
+    }
+
+    @Test
+    public void getCustomerTest(){
+        String getCustomerUrl = "http://localhost:8084/api/v1/customer/{id}";
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.set("X-Request-Source", "Desktop");
+        HttpEntity request = new HttpEntity(headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                getCustomerUrl,
+                HttpMethod.GET,
+                request,
+                String.class,
+                1
+        );
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            System.out.println("Request Successful.");
+            System.out.println(response.getBody());
+        } else {
+            System.out.println("Request Failed");
+            System.out.println(response.getStatusCode());
+        }
     }
 }

@@ -24,7 +24,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Log
@@ -38,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private BillRepository billRepository;
 
-    public CustomerDto update( CustomerDto customerDto,int id) {
+    public CustomerDto update(CustomerDto customerDto, int id) {
         if(customerRepository.existsById(id)){
             CustomerDto updatedCustomer = CustomerMapper.INSTANCE.customerToDto(customerRepository.findById(id).get());
             updatedCustomer.setId(id);
@@ -63,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (id < 0)
             throw new InputNotValid("UnValid input id , it must be positive integer");
         if(!customerRepository.existsById(id))
-            throw new NotFoundExceptions("Fail tp delete the object Customer with id - "+id);
+            throw new NotFoundExceptions("Fail tp delete the object Customer with id - " + id);
         customerRepository.deleteById(id);
     }
 

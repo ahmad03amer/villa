@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 
 public class EmployeeDto {
+    private int id;//edited
     private String fullName;
     private String idNumber;
     private String email;
@@ -17,6 +18,13 @@ public class EmployeeDto {
     private double salary;
     private double hours;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFullName() {
         return fullName;

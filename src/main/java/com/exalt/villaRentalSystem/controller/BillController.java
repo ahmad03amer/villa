@@ -1,7 +1,6 @@
 package com.exalt.villaRentalSystem.controller;
 
 import com.exalt.villaRentalSystem.dto.BillDto;
-import com.exalt.villaRentalSystem.dto.CustomerDto;
 import com.exalt.villaRentalSystem.model.Bill;
 import com.exalt.villaRentalSystem.projection.BillProjection;
 import com.exalt.villaRentalSystem.service.BillService;
@@ -37,13 +36,13 @@ public class BillController {
         BillDto bill = billService.findById(id);
         return bill;
     }
-    @GetMapping("/api/v1/bills/projectedBills")
+    @GetMapping("/api/v1/bills/projected-bills")
     public List<BillProjection> findAllProjectedBy(){
         log.info("User  entered /bills/projectedBills to projectedBils ");
         return billService.findAllProjectedBy();
     }
 
-    @GetMapping("/api/v1/bills/pagingBill")
+    @GetMapping("/api/v1/bills/paging-bill")
     @ResponseBody
     public Page<Bill> loadBillsPaging(@RequestParam(name = "page" , defaultValue = "0", required = false) int page
             , @RequestParam(name = "size", defaultValue = "2", required = false) int size){
@@ -51,15 +50,15 @@ public class BillController {
         return billService.loadBillsPaging(page,size);
     }
 
-    @DeleteMapping("/api/v1/bill/delete/{id}")
+    @DeleteMapping("/api/v1/bill/{id}")
     public void delete( @PathVariable int id){
         log.info("User  entered /bill/{id} to delete bill ");
         billService.delete(id);
     }
 
-    @PostMapping("/api/v1/bill/save")
-    public BillDto save(@ModelAttribute BillDto billDto){
+    @PostMapping("/api/v1/bill")
+    public BillDto add(@ModelAttribute BillDto billDto){
         log.info("user entered the saveBill");
-        return billService.save(billDto);
+        return billService.add(billDto);
     }
 }

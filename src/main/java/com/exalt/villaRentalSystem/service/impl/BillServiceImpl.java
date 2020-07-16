@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class BillServiceImpl implements BillService {
     }
 
     public Page<Bill> loadBillsPaging(int page, int size) {
-        Pageable pagable =  PageRequest.of(page,size, Sort.Direction.ASC,"amount");
+        Pageable pagable =  PageRequest.of(page, size, Sort.Direction.ASC,"amount");
         Page<Bill> bills = billRepository.findAll(pagable);
         return bills;
     }
@@ -63,7 +64,8 @@ public class BillServiceImpl implements BillService {
         billRepository.deleteById(id);
     }
 
-    public BillDto save(BillDto billDto){
+    @Transactional
+    public BillDto add(BillDto billDto){
         if(billDto != null) {
             Bill bill = BillMapper.INSTANCE.dtoTobill(billDto);
             bill = billRepository.save(bill);

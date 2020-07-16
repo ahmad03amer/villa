@@ -33,7 +33,7 @@ public class DepartmentController {
         return department;
     }
 
-    @PostMapping("/api/v1/department/add")
+    @PostMapping("/api/v1/department")
     public DepartmentDto add(@RequestBody DepartmentDto dep){
         log.info("user entered the addDepartment");
         DepartmentDto department = departmentService.add(dep);

@@ -1,6 +1,8 @@
 package com.exalt.villaRentalSystem.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +20,7 @@ import java.util.Date;
 public class Bill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Temporal(TemporalType.TIMESTAMP)
     private Date date = new Date();
@@ -28,7 +30,7 @@ public class Bill {
     @Column(name = "villa_id")
     private int  villaId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY )
     @MapsId
     @JsonBackReference
     private Customer customer;

@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Data
 public class VillaDto implements Serializable {
+    private int id;//edited
     private  String name;
     private String description;
     private double cost;
@@ -53,5 +54,11 @@ public class VillaDto implements Serializable {
         this.status = status;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }

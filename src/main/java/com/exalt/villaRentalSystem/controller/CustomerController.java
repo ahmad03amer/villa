@@ -36,7 +36,7 @@ public class CustomerController {
         return customer;
     }
 
-    @PostMapping("/api/v1/customer/add")
+    @PostMapping("/api/v1/customer/")
     public CustomerDto save(@RequestBody CustomerDto cus){
         log.info("user entered the saveCustomer");
         CustomerDto customer = customerService.save(cus);
@@ -50,7 +50,7 @@ public class CustomerController {
         return  customer;
     }
 
-    @DeleteMapping(value = "/api/v1/customer/delete/{id}")
+    @DeleteMapping(value = "/api/v1/customer/{id}")
     public void delete( @PathVariable int id){
         log.info("User  entered /customers/{id}/ to deleteCustomers ");
         customerService.delete(id);

@@ -1,27 +1,26 @@
 package com.exalt.villaRentalSystem.service;
 
-import com.exalt.villaRentalSystem.dto.CustomerDto;
-import com.exalt.villaRentalSystem.dto.Mapper.CustomerMapper;
-import com.exalt.villaRentalSystem.errorAPI.NotFoundExceptions;
 import com.exalt.villaRentalSystem.model.Bill;
 import com.exalt.villaRentalSystem.model.Customer;
 import com.exalt.villaRentalSystem.repository.BillRepository;
 import com.exalt.villaRentalSystem.repository.CustomerRepository;
-import org.junit.Assert;
+import javassist.NotFoundException;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,35 +60,59 @@ public class BillServiceImplTest {
         assertNotNull(bill);
     }
 
-    @BeforeEach
+
     public void createBill(){
         Bill bill = new Bill();
         bill.setAmount(3200);
         bill.setDescription("online");
         bill.setDate(new Date());
         bill.setVillaId(1);
+        bill.setCustomer(customerRepository.findById(1).get());
         billRepository.save(bill);
     }
-/*
+
+    @BeforeEach
+    public void createCustomer(){
+        Customer customer = new Customer();
+        customer.setId(1);
+        customer.setIdNumber("3669665");
+        customer.setEmail("raed@gmail.com");
+        customer.setFullName("raed");
+        customer.setRole("customer");
+        customer.setPassword("@366952");
+        customer.setDOB("1978-05-12");
+        customer.setGender("male");
+        customer.setPhoneNumber("+9705366695");
+        customer.setAddress("nablus");
+
+        customerRepository.save(customer);
+    }
+
     @Test
-    public void findallBillsTest(){
-        List<Bill> bills = billRepository.findAll();
-        Assert.assertNotNull(bills);
-        bills.forEach(bill -> System.out.println(bill.getDescription()));
-    }*/
-/*
+    public void addBillAsJsonInputTest() throws JSONException, NotFoundException {
+        String addBillUrl = "http://localhost:8084/api/v1/bill";
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-    TestRestTemplate testRestTemplate = new TestRestTemplate();
-    ResponseEntity<Bill> response = testRestTemplate.getForEntity("http://localhost:8081/api/v1/bill/1", Bill.class);
-*/
+        JSONObject billJsonObject = new JSONObject();
+        billJsonObject.put("amount",2200);
+        billJsonObject.put("description","online");
+        billJsonObject.put("villaId",1);
+        billJsonObject.put("customer",customerRepository.findById(1).get());
 
-/*    @Test
-    public void findBillRestTemplate(){
-        Bill bill = billRepository.findById(1).orElse(null);
-        if(bill == null)
-            throw new NotFoundExceptions("There is no bill with id -1 ");
+        HttpEntity<String> request = new HttpEntity<String>(billJsonObject.toString(), headers);
+        Bill bill = restTemplate.postForObject(addBillUrl, request, Bill.class);
 
-        assertEquals(bill,response);
-    }*/
-
+        if (bill != null){
+            assertAll("villa",
+                    () -> assertEquals(2200,bill.getAmount()),
+                    () -> assertEquals("online",bill.getDescription()),
+                    () -> assertEquals(1,bill.getVillaId())
+            );
+        }else {
+            throw new NotFoundException("The villa with id=2 does not exist");
+        }
+        assertNotNull(bill,"villa Object is null!!");
+    }
 }
