@@ -39,6 +39,12 @@ https://drive.google.com/file/d/1EB41YHtAtr5JNI-vs0je2EU_JnXPjM_5/view?usp=shari
 - [8] using swagger or postman u can use the Api's.
 - [9] u can activate h2 database using h2 properties profile insted of mysql.
 
+# To run the project without IDE :
+- [1] Open the CMD  or gitBash .
+- [2] move to the project path .
+- [3]  To run the Test -> run the command "mvn clean install".
+- [4] run without spring-boot Tools -> run the command "mvn spring-boot:run".
+
 # Apis
 > each entity have a group of Api's that perform an action , see the following example :
 ### Villa

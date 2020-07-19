@@ -16,7 +16,6 @@ import java.util.Optional;
 @Log
 @RestController
 public class EmployeeController {
-    Logger log = LoggerFactory.getLogger(VillaController.class);
 
     @Autowired
     private EmployeeServiceImpl employeeService;
@@ -35,21 +34,21 @@ public class EmployeeController {
         return employee;
     }
 
-    @PostMapping("/api/v1/employee/add")
+    @PostMapping("/api/v1/employee/")
     public EmployeeDto save(@RequestBody EmployeeDto emp){
         log.info("user entered the saveEmployee");
         EmployeeDto employee = employeeService.save(emp);
         return employee;
     }
 
-    @PostMapping("/api/v1/employees/add")
+    @PostMapping("/api/v1/employees/")
     public Employee  add(@RequestBody  Employee employee){
         log.info("User  entered /employees to addEmployees ");
         employeeService.add(employee);
         return employee;
     }
 
-    @PutMapping(value = "/api/v1/employee/update/{id}")
+    @PutMapping(value = "/api/v1/employee/{id}")
     public EmployeeDto update(@RequestBody EmployeeDto employeeDto,@PathVariable int id){
         log.info("User  entered /employees/{id}/ to updateEmployee ");
         employeeService.update(employeeDto,id);
@@ -57,7 +56,7 @@ public class EmployeeController {
     }
 
 
-    @DeleteMapping(value = "/api/v1/employee/delete/{id}")
+    @DeleteMapping(value = "/api/v1/employee/{id}")
     public void delete( @PathVariable int id){
         log.info("User  entered /employees/{id}/ to deleteEmployee ");
         employeeService.delete(id);
@@ -71,13 +70,13 @@ public class EmployeeController {
         return employees;
     }
 
-    @GetMapping("/api/v1/employees/projectedEmp")
+    @GetMapping("/api/v1/employees/projected-employee")
     public List<EmployeeProjection> findAllProjectedBy(){
         log.info("User  entered /employees to projectedEmp ");
         return employeeService.findAllProjectedBy();
     }
 
-    @GetMapping("/api/v1/employees/pagingEmp")
+    @GetMapping("/api/v1/employees/paging-employee")
     @ResponseBody
     public Page<Employee> loadEmployeesPaging(@RequestParam(name = "page" , defaultValue = "0", required = false) int page
             , @RequestParam(name = "size", defaultValue = "1", required = false) int size){

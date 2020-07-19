@@ -11,11 +11,11 @@ public interface EmployeeService {
 
     Employee add(Employee employee);
 
-     EmployeeDto update( EmployeeDto employeeDto,int id);
+    EmployeeDto update( EmployeeDto employeeDto,int id);
 
-     void delete(int id);
+    void delete(int id);
 
-     List<Employee> filterEmployeeByAddress(String address);
+    List<Employee> filterEmployeeByAddress(String address);
 
     List<EmployeeProjection> findAllProjectedBy();
 

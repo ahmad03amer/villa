@@ -13,15 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @Log
 @RestController
 public class BillController {
-    Logger log = LoggerFactory.getLogger(VillaController.class);
 
     @Autowired
     private BillService billService;
-
 
     @GetMapping("/api/v1/bills")
     public List<BillDto> findAll(){
@@ -36,9 +33,10 @@ public class BillController {
         BillDto bill = billService.findById(id);
         return bill;
     }
+
     @GetMapping("/api/v1/bills/projected-bills")
     public List<BillProjection> findAllProjectedBy(){
-        log.info("User  entered /bills/projectedBills to projectedBils ");
+        log.info("User  entered /bills/projectedBills to projectedBills ");
         return billService.findAllProjectedBy();
     }
 

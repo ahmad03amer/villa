@@ -14,8 +14,6 @@ import java.util.List;
 @Log
 @RestController
 public class DepartmentController {
-    Logger log = LoggerFactory.getLogger(VillaController.class);
-
     @Autowired
     private DepartmentService departmentService ;
 
@@ -40,7 +38,7 @@ public class DepartmentController {
         return department;
     }
 
-    @DeleteMapping("/api/v1/department/delete/{id}")
+    @DeleteMapping("/api/v1/department/{id}")
     public void delete( @PathVariable int id){
         log.info("User  entered /deleteDep/{id} to deleteDepartment ");
         departmentService.delete(id);

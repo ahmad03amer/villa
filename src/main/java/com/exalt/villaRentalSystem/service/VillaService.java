@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface VillaService {
 
-     void delete(int id);
+    void delete(int id);
 
-     List<Villa> findVillaByName( String name);
+    List<Villa> findVillaByName( String name);
 
-     List<Villa> filterVillasByCost( double cost);
+    List<Villa> filterVillasByCost( double cost);
 
     List<VillaProjection> findAllProjectedBy();
 
@@ -23,9 +23,7 @@ public interface VillaService {
 
     VillaDto findById(int id);
 
-
     void update(int id, VillaDto villaDto);
-
 
     Villa save(VillaDto villaDto);
 }

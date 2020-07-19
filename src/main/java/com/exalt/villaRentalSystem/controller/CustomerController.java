@@ -17,7 +17,6 @@ import java.util.List;
 @Log
 @RestController
 public class CustomerController {
-    Logger log = LoggerFactory.getLogger(VillaController.class);
 
     @Autowired
     private CustomerService customerService ;
@@ -71,13 +70,13 @@ public class CustomerController {
         System.out.println(villasDto.get(0).getName());
     }
 
-    @GetMapping("/api/v1/customers/projectedCus")
+    @GetMapping("/api/v1/customers/projected-customer")
     public List<CustomerProjection> findAllProjectedBy(){
         log.info("User  entered /employees to projectedCus ");
         return customerService.findAllProjectedBy();
     }
 
-    @GetMapping("/api/v1/customers/pagingCus")
+    @GetMapping("/api/v1/customers/paging-customer")
     @ResponseBody
     public Page<Customer> loadEmployeesPaging(@RequestParam(name = "page" , defaultValue = "0", required = false) int page
             , @RequestParam(name = "size", defaultValue = "1", required = false) int size){

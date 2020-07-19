@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@Log
+@Log
 @RestController
 @RequiredArgsConstructor
 public class VillaController {
-    Logger log = LoggerFactory.getLogger(VillaController.class);
 
     @Autowired
     private VillaService villaService;
@@ -34,7 +33,7 @@ public class VillaController {
         return villa;
     }
 
-    @PostMapping("/api/v1/villa/add")
+    @PostMapping("/api/v1/villa")
     public Villa save(@RequestBody VillaDto villaDto){
        System.out.println("user entered the saveVilla" + villaDto);
         Villa villa =  villaService.save(villaDto);
@@ -42,7 +41,7 @@ public class VillaController {
         return villa;
     }
 
-    @PutMapping("/api/v1/villa/update/{id}")
+    @PutMapping("/api/v1/villa/{id}")
     public void update(@PathVariable int id, @ModelAttribute VillaDto villaDto) {
         log.info("user entered to updateVilla");
         villaService.update(id,villaDto);
@@ -68,13 +67,13 @@ public class VillaController {
         return villas;
     }
 
-    @GetMapping("/api/v1/villas/projectedVillas")
+    @GetMapping("/api/v1/villas/projected-villas")
     public   List<VillaProjection> findAllProjectedBy(){
         log.info("User  entered /villas to getAllVillas ");
         return villaService.findAllProjectedBy();
     }
 
-    @GetMapping("/api/v1/villas/pagingVilla")
+    @GetMapping("/api/v1/villas/paging-villa")
     @ResponseBody
     public  Page<Villa> loadVillasPaging( @RequestParam(name = "page" , defaultValue = "0", required = false) int page
             , @RequestParam(name = "size", defaultValue = "2", required = false) int size){

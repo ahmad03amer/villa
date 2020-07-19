@@ -24,13 +24,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes= VillaRentalSystemApplication.class)
-@ActiveProfiles("h2")
 public class VillaServiceImplTest {
 
     @Autowired
@@ -211,7 +209,7 @@ public class VillaServiceImplTest {
 
     @Test
     public void addVillaAsJsonInputTest() throws  JSONException, NotFoundException {
-        String addVillaUrl = "http://localhost:8084/api/v1/villa/add";
+        String addVillaUrl = "http://localhost:8084/api/v1/villa";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

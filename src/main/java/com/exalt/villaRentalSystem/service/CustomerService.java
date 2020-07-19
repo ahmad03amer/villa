@@ -26,7 +26,7 @@ public interface CustomerService {
 
      List<CustomerDto> findAll();
 
-      CustomerDto findById(int id);
+     CustomerDto findById(int id);
 
      CustomerDto save(CustomerDto cus);
 

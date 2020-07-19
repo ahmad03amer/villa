@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class VillaServiceImpl implements VillaService {
     @Autowired
     private VillaRepository villaRepository;
 
+    @Transactional
     public void delete(int id) {
         if (id < 0)
             throw new InputNotValid("UnValid input id , it must be positive integer");
